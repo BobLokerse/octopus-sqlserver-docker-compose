@@ -5,8 +5,9 @@ services:
   db:
     image: microsoft/mssql-server-windows-express
     environment:
-      sa_password: "${SA_PASSWORD}"
-      ACCEPT_EULA: "Y"
+      - sa_password:${SA_PASSWORD}
+      - ACCEPT_EULA:Y
+      - attach_dbs="[{'dbName':'Octopus','dbFiles':['C:\\sqldata\\octopus.mdf','C:\\sqldata\\octopus_log.ldf']}]"
     volumes:
       - "C:/Octopus/data:C:/sqldata"
     healthcheck:
