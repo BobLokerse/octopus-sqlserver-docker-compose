@@ -1,12 +1,14 @@
 # Original from: https://octopus.com/docs/installation/octopus-in-container/docker-compose)
 #
-version: '2.1'
+version: '2.2'
 services:
   db:
     image: microsoft/mssql-server-windows-express
     environment:
       sa_password: "${SA_PASSWORD}"
       ACCEPT_EULA: "Y"
+    volumes:
+      - "C:/Octopus/data:C:/sqldata"
     healthcheck:
       test: [ "CMD", "sqlcmd", "-U", "sa", "-P", "${SA_PASSWORD}", "-Q", "select 1" ]
       interval: 10s
@@ -24,8 +26,8 @@ services:
         condition: service_healthy
     stdin_open: true
     volumes:
-      - "./Repository:C:/Repository"
-      - "./TaskLogs:C:/TaskLogs"
+      - "C:/Octopus/Repository:C:/Repository"
+      - "C:/Octopus/TaskLogs:C:/TaskLogs"
 networks:
   default:
     external:
